@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>GPT Pre-Training Diagram</title>
+    <!-- Include Mermaid.js for flowchart -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <!-- Include D3.js for advanced visualizations -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+      .diagram-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .step-box {
+        border: 2px solid #333;
+        padding: 10px;
+        margin: 10px;
+        border-radius: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="diagram-container">
+      <div id="gpt-diagram"></div>
+    </div>
+
+    <script>
+      // Initialize Mermaid
+      mermaid.initialize({ startOnLoad: true });
+
+      function createGPTDiagram(data) {
+        const diagramData = JSON.parse(data);
+        let mermaidDefinition = "graph TD;\n";
+
+        // Create nodes and connections
+        Object.values(diagramData).forEach((section) => {
+          let prevStep = null;
+          section.steps.forEach((step) => {
+            mermaidDefinition += `${step.id}[${step.name}];\n`;
+
+            if (prevStep) {
+              mermaidDefinition += `${prevStep.id} --> ${step.id};\n`;
+            }
+
+            if (step.substeps) {
+              step.substeps.forEach((substep, index) => {
+                mermaidDefinition += `${substep.id}[${substep.name}];\n`;
+                if (index === 0) {
+                  mermaidDefinition += `${step.id} --> ${substep.id};\n`;
+                } else {
+                  mermaidDefinition += `${step.substeps[index - 1].id} --> ${
+                    substep.id
+                  };\n`;
+                }
+              });
+            }
+
+            prevStep = step;
+          });
+        });
+
+        // Render the diagram
+        const element = document.getElementById("gpt-diagram");
+        element.innerHTML = `<div class="mermaid">${mermaidDefinition}</div>`;
+        mermaid.init(undefined, ".mermaid");
+      }
+
+      // Example usage (you would typically get this data from your PHP backend)
+      document.addEventListener("DOMContentLoaded", () => {
+        // Assuming you're getting the JSON from your PHP backend
+        fetch("/api/gpt-diagram")
+          .then((response) => response.json())
+          .then((data) => createGPTDiagram(JSON.stringify(data)))
+          .catch((error) => console.error("Error loading diagram:", error));
+      });
+    </script>
+  </body>
+</html>
