@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Card Slider</title>
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+ 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+  <link rel="stylesheet" href="assets/CSS/style4card1.css">
+
+  <link rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<link rel="stylesheet" href="assets/CSS/style4sidebar.css" />
+</head>
+
+<body>
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <img src="assets/img/v42_64.png" alt="logo" />
+      <h2>Pasiginae</h2>
+    </div>
+
+    <ul class="sidebar-links">
+      <h4>
+        <span>Main Menu</span>
+        <div class="menu-separator"></div>
+      </h4>
+      <li>
+        <a href="main.html">
+          <span class="material-symbols-outlined"> dashboard </span>Dashboard</a>
+      </li>
+      <li>
+      <h4>
+        <span>General</span>
+        <div class="menu-separator"></div>
+      </h4>
+      <li>
+        <a href="calendar.html"><span class="material-symbols-outlined"> dataset </span>Calendar</a>
+      </li>
+      <li>
+        <a href="card2certificate.html"><span class="material-symbols-outlined"> quick_reference</span>Certificate</a>
+      </li>
+      <li>
+        <a href="#"><span class="material-symbols-outlined"> settings_accessibility </span>Events</a>
+      </li>
+     
+     
+      <h4>
+        <span>Account</span>
+        <div class="menu-separator"></div>
+      </h4>
+
+      <li>
+        <a href="#"><span class="material-symbols-outlined">
+            notifications_active </span>Notifications</a>
+      </li>
+
+      <li>
+        <a href="userprofile.html"><span class="material-symbols-outlined"> account_circle </span>Profile</a>
+      </li>
+        <li>
+        <form action="allcode.php" method="POST">
+          <button type="submit" name="logout_btn" class="logout-btn">
+            <a><span class="material-symbols-outlined">logout</span>Logout</a>
+          </button>
+        </form>
+      </li>
+    </ul>
+    </div>
+  </aside>  
+
+<body>
+  <div class="container swiper">
+    <div class="card-wrapper">
+
+      <ul class="card-list swiper-wrapper">
+        <li class="card-item swiper-slide">
+          <a href="Marriage.php" class="card-link">
+            <img src="assets/img/marriage.jpg" alt="Card Image" class="card-image">
+            <p class="badge badge-designer">Wedding</p>
+            <h2 class="card-title">Use this form to document and celebrate the union of two people in love. Here, you'll capture the significance of their vows, the joy of the day, <br> and the promises made as they embark on their life together</h2>
+            <button class="card-button material-symbols-rounded">arrow_forward</button>
+          </a>
+        </li>
+        <li class="card-item swiper-slide">
+          <a href="Baptism.php" class="card-link">
+            <img src="assets/img/baptismal.jpg" alt="Card Image" class="card-image">
+            <p class="badge badge-developer">Baptismal</p>
+            <h2 class="card-title">Use this form to commemorate the sacred occasion of baptism. This is a moment to celebrate a new life in faith, as the individual is welcomed into a spiritual community and blessed with grace.</h2>
+            <button class="card-button material-symbols-rounded">arrow_forward</button>
+          </a>
+        </li>
+
+        <li class="card-item swiper-slide">
+          <a href="#" class="card-link">
+              <img src="assets/img/confirmation.jpg" alt="Card Image" class="card-image">
+              <p class="badge badge-marketer">Confirmation</p>
+              <h2 class="card-title">Use this form to record and celebrate a meaningful milestone in faith. It marks the moment when an individual affirms their belief and commitment, symbolizing a deepened connection to their spiritual journey.</h2>
+              <button class="card-button material-symbols-rounded" onclick="showPopup()">arrow_forward</button>
+          </a>
+      </li>
+      
+      <script>
+      function showPopup() {
+          alert("We apologize. This event is currently unavailable.Thank you");
+      }
+      </script>
+
+
+        <li class="card-item swiper-slide">
+          <a href="Burial.php" class="card-link">
+            <img src="assets/img/burial.png" alt="Card Image" class="card-image">
+            <p class="badge badge-gamer">Funeral</p>
+            <h2 class="card-title">Use this form to honor and commemorate the life of your departed loved one. This section allows you to reflect on their journey, <br> celebrating their legacy and the impact they left on family and friends</h2>
+            <button class="card-button material-symbols-rounded">arrow_forward</button>
+          </a>
+        </li>
+      </ul>
+
+       <!-- Pagination -->
+      <div class="swiper-pagination"></div>
+
+      <!-- Navigation Buttons -->
+      <div class="swiper-slide-button swiper-button-prev"></div>
+      <div class="swiper-slide-button swiper-button-next"></div>
+    </div>
+  </div>
+
+  <!-- Linking SwiperJS script -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+  <!-- Linking custom script -->
+  <script src="assets/js/script4card.js"></script>
+</body>
+</html>

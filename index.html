@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pasiginae</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Swiper JS CSS-->
+    <link rel="stylesheet" href="assets/CSS/swiper-bundle.min.css" />
+
+    <!-- Boxicons -->
+    <link
+      href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-50">
+    <!-- Header -->
+    <header class="fixed w-full bg-white shadow-md z-50">
+      <nav class="container mx-auto px-4 py-4">
+        <div class="flex items-center justify-between">
+          <a href="#" class="flex items-center">
+            <span class="text-2xl font-bold text-gray-800">Pasiginae</span>
+          </a>
+
+          <div class="hidden md:flex items-center space-x-8">
+            <ul class="flex space-x-6">
+              <li>
+                <a
+                  href="#home"
+                  class="text-gray-800 hover:text-blue-600 transition"
+                  >Home</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#about"
+                  class="text-gray-800 hover:text-blue-600 transition"
+                  >About Pasiginae</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#menu"
+                  class="text-gray-800 hover:text-blue-600 transition"
+                  >Services</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#review"
+                  class="text-gray-800 hover:text-blue-600 transition"
+                  >FAQs</a
+                >
+              </li>
+            </ul>
+
+            <div class="flex items-center space-x-2">
+              <i class="bx bx-envelope text-gray-600"></i>
+              <span class="text-gray-600">pasiginae@gmail.com</span>
+            </div>
+          </div>
+
+          <button class="md:hidden">
+            <i class="bx bx-menu text-2xl"></i>
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Home Section -->
+    <main>
+      <section id="home" class="pt-20">
+        <div class="swiper mySwiper">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide relative">
+              <img
+                src="assets/img/vica.jpg"
+                alt=""
+                class="w-full h-[600px] object-cover"
+              />
+              <div
+                class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+              >
+                <div class="text-center text-white">
+                  <h4 class="text-xl mb-2">Binary 101</h4>
+                  <h1 class="text-5xl font-bold mb-6">
+                    WELCOME TO<br />PASIGINAE!
+                  </h1>
+                  <button
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-full transition"
+                  >
+                    <a href="register.php">Sign Up</a>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Second slide similar structure -->
+            <div class="swiper-slide relative">
+              <img
+                src="assets/img/vicaa.jpg"
+                alt=""
+                class="w-full h-[600px] object-cover"
+              />
+              <div
+                class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+              >
+                <div class="text-center text-white">
+                  <h4 class="text-xl mb-2">PASIGINAE.</h4>
+                  <h2 class="text-4xl font-bold mb-6">
+                    System Portal<br />Centralized Portal
+                  </h2>
+                  <button
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-full transition"
+                  >
+                    <a href="login.php">Log In</a>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="swiper-button-next"></div>
+          <div class="swiper-button-prev"></div>
+          <div class="swiper-pagination"></div>
+        </div>
+      </section>
+
+      <!-- About Section -->
+      <section id="about" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+          <div class="grid md:grid-cols-2 gap-12 items-center">
+            <div class="relative">
+              <img
+                src="assets/img/CBCP.jpeg"
+                alt=""
+                class="rounded-lg shadow-lg"
+              />
+              <div
+                class="bg-white p-6 rounded-lg shadow-lg absolute -bottom-10 right-10 max-w-md"
+              >
+                <i class="bx bx-heart text-red-500 text-2xl mb-2"></i>
+                <p class="text-gray-600">
+                  PASIGINAE, aims to streamline record management processes,
+                  maintain data integrity and security, enhance accessibility to
+                  vital records and facilitate remote collaboration and
+                  communication within the Diocese of Pasig.
+                </p>
+              </div>
+            </div>
+
+            <div class="space-y-6">
+              <h4 class="text-xl text-gray-600 italic">Pasiginae</h4>
+              <h2 class="text-4xl font-bold text-gray-800">
+                We Combine Tradition<br />and Computerize
+              </h2>
+              <p class="text-gray-600">
+                The Diocese of Pasig is one of the Dioceses of the Catholic
+                Church in the Philippines that comprises the City of Pasig,
+                Taguig, and the Municipality of Pateros in Metro Manila,
+                Philippines.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Services Section (formerly Menu) -->
+      <section id="menu" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+          <div class="text-center mb-12">
+            <h4 class="text-xl text-gray-600 italic mb-2">Services</h4>
+            <h1 class="text-4xl font-bold text-gray-800 mb-4">
+              SERVICES OFFERED
+            </h1>
+            <p class="text-gray-600">
+              Our systems provides you a form to schedule your service of your
+              choice. We offer you a platform for easier fill-out services.
+            </p>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-8">
+            <!-- Service Cards -->
+            <div class="grid gap-6">
+              <!-- Individual service cards -->
+              <div
+                class="bg-white rounded-lg shadow-md p-6 flex items-center space-x-4"
+              >
+                <img
+                  src="assets/img/baptismal.jpg"
+                  alt=""
+                  class="w-24 h-24 rounded-lg object-cover"
+                />
+                <div>
+                  <h4 class="text-xl font-semibold mb-2">Baptismal</h4>
+                  <p class="text-gray-600">
+                    Baptisms are only available on Sundays, depending on the
+                    schedule.
+                  </p>
+                  <span class="text-blue-600 mt-2 block">Sunday</span>
+                </div>
+              </div>
+              <!-- Repeat similar structure for other services -->
+            </div>
+
+            <!-- Schedule Table -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+              <h3 class="text-2xl font-semibold mb-6">Schedule of Services</h3>
+              <div class="space-y-4">
+                <!-- Schedule items -->
+                <div class="flex justify-between items-center">
+                  <span class="font-medium">Sunday</span>
+                  <span class="text-gray-600">Anytime during regular mass</span>
+                </div>
+                <!-- Repeat for other days -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Rest of the sections following similar pattern -->
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+      <div class="container mx-auto px-4">
+        <div class="grid md:grid-cols-3 gap-8">
+          <div>
+            <p class="text-gray-400 mb-6">
+              Our team would love to help, upgrade and update the system we
+              created to secure and centralize the documents that you wish to
+              request and retrieve from your parishes.
+            </p>
+          </div>
+          <div>
+            <iframe
+              src="https://www.google.com/maps/embed?..."
+              class="w-full h-64 rounded-lg"
+            ></iframe>
+          </div>
+          <div>
+            <h4 class="text-xl font-semibold mb-4">Help?</h4>
+            <ul class="space-y-2">
+              <li>
+                <a
+                  href="#about"
+                  class="text-gray-400 hover:text-white transition"
+                  >About Diocese</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#review"
+                  class="text-gray-400 hover:text-white transition"
+                  >FAQs</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="text-center text-gray-400 mt-8">
+        &#169; TheBinary101. All rights reserved
+      </div>
+    </footer>
+
+    <!-- Scroll Up Button -->
+    <button
+      class="fixed bottom-6 right-6 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 transition"
+    >
+      <i class="bx bx-up-arrow-alt text-2xl"></i>
+    </button>
+
+    <!-- Original Scripts -->
+    <script src="assets/js/swiper-bundle.min.js"></script>
+    <script src="assets/js/scrollreveal.js"></script>
+    <script src="assets/js/script.js"></script>
+  </body>
+</html>
