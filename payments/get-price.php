@@ -1,9 +1,7 @@
-
-// get-price.php
 <?php
 require 'dbConnection.php';
 
-if(isset($_GET['service_id']) && isset($_GET['parish_id'])) {
+if (isset($_GET['service_id']) && isset($_GET['parish_id'])) {
     $service_id = $_GET['service_id'];
     $parish_id = $_GET['parish_id'];
 
@@ -12,8 +10,12 @@ if(isset($_GET['service_id']) && isset($_GET['parish_id'])) {
     $stmt->bind_param("ii", $service_id, $parish_id);
     $stmt->execute();
     $result = $stmt->get_result();
-    $row = $result->fetch_assoc();
 
-    header('Content-Type: application/json');
-    echo json_encode(['amount' => $row['amount']]);
+    if ($row = $result->fetch_assoc()) {
+        echo json_encode(['amount' => $row['amount']]);
+    } else {
+        echo json_encode(['amount' => '0.00']);
+    }
+} else {
+    echo json_encode(['amount' => '0.00']);
 }

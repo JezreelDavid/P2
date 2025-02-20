@@ -1,42 +1,5 @@
 <?php
-require_once 'includes/functions.php';
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Generate ticket code
-    $ticketCode = generateTicketCode();
-    
-    // Get form data
-    $paymentDetails = [
-        'user_id' => $_SESSION['user_id'],
-        'payment_method' => $_POST['payment_method'],
-        'amount' => $_POST['amount'],
-        'service' => $_POST['service'],
-        'email' => $_POST['email']
-    ];
-    
-    // Save to database
-    if (savePayment(
-        $paymentDetails['user_id'],
-        $ticketCode,
-        $paymentDetails['payment_method'],
-        $paymentDetails['amount'],
-        $paymentDetails['service']
-    )) {
-        // Send email
-        sendTicketEmail($paymentDetails['email'], $ticketCode, $paymentDetails);
-        
-        // Return success response
-        echo json_encode([
-            'success' => true,
-            'ticket_code' => $ticketCode
-        ]);
-        exit;
-    }
-    
-    // Return error response if save failed
-    echo json_encode(['success' => false]);
-    exit;
-}
+    // Add any PHP processing logic here
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -158,10 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </p>
                 </div>
 
-                <form class="mt-8 space-y-6" action="#" method="POST" id="paymentForm">
-                    <!-- Add hidden input for service_type -->
-                    <input type="hidden" name="service_type" value="wedding">
-                    
+                <form class="mt-8 space-y-6" action="#" method="POST">
                     <!-- Personal Information -->
                     <div class="space-y-4">
                         <div>
@@ -322,15 +282,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div class="grid grid-cols-2 gap-4">
                             <div>
                                 <p class="text-sm font-medium text-gray-500">Full Name</p>
-                                <p class="mt-1 personal-info-name"></p>
+                                <p class="mt-1" x-text="document.getElementById('name').value"></p>
                             </div>
                             <div>
                                 <p class="text-sm font-medium text-gray-500">Email</p>
-                                <p class="mt-1 personal-info-email"></p>
+                                <p class="mt-1" x-text="document.getElementById('email').value"></p>
                             </div>
                             <div>
                                 <p class="text-sm font-medium text-gray-500">Phone</p>
-                                <p class="mt-1 personal-info-phone"></p>
+                                <p class="mt-1" x-text="document.getElementById('phone').value"></p>
                             </div>
                         </div>
                     </div>
@@ -341,18 +301,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div class="grid grid-cols-2 gap-4">
                             <div>
                                 <p class="text-sm font-medium text-gray-500">Payment Method</p>
-                                <p class="mt-1 capitalize payment-method"></p>
+                                <p class="mt-1 capitalize" x-text="payment_method"></p>
                             </div>
                             <template x-if="payment_method === 'gcash'">
                                 <div>
                                     <p class="text-sm font-medium text-gray-500">GCash Number</p>
-                                    <p class="mt-1 gcash-number"></p>
+                                    <p class="mt-1" x-text="document.getElementById('gcash_number').value"></p>
                                 </div>
                             </template>
                             <template x-if="payment_method === 'cash'">
                                 <div>
                                     <p class="text-sm font-medium text-gray-500">Delivery Address</p>
-                                    <p class="mt-1 delivery-address"></p>
+                                    <p class="mt-1" x-text="document.getElementById('address').value + ', ' + document.getElementById('barangay').value"></p>
                                 </div>
                             </template>
                         </div>
@@ -364,11 +324,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div class="grid grid-cols-2 gap-4">
                             <div>
                                 <p class="text-sm font-medium text-gray-500">Selected Service</p>
-                                <p class="mt-1 selected-service"></p>
+                                <p class="mt-1" x-text="document.getElementById('service').options[document.getElementById('service').selectedIndex].text"></p>
                             </div>
                             <div>
                                 <p class="text-sm font-medium text-gray-500">Amount</p>
-                                <p class="mt-1">₱<span class="amount-value"></span></p>
+                                <p class="mt-1">₱<span x-text="document.getElementById('amount').value"></span></p>
                             </div>
                         </div>
                     </div>
@@ -403,79 +363,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 document.getElementById('amount').value = amounts[service];
             }
         }
-
-        // Add this function to update review details
-        function updateReviewDetails() {
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const phone = document.getElementById('phone').value;
-            const service = document.getElementById('service');
-            const serviceName = service.options[service.selectedIndex].text;
-            const amount = document.getElementById('amount').value;
-            const paymentMethod = document.querySelector('input[name="payment_method"]:checked').value;
-
-            // Update personal information
-            document.querySelector('[x-show="step === 3"] .personal-info-name').textContent = name;
-            document.querySelector('[x-show="step === 3"] .personal-info-email').textContent = email;
-            document.querySelector('[x-show="step === 3"] .personal-info-phone').textContent = phone;
-
-            // Update payment details
-            document.querySelector('[x-show="step === 3"] .payment-method').textContent = paymentMethod;
-            if (paymentMethod === 'gcash') {
-                document.querySelector('[x-show="step === 3"] .gcash-number').textContent = 
-                    document.getElementById('gcash_number').value;
-            } else {
-                document.querySelector('[x-show="step === 3"] .delivery-address').textContent = 
-                    `${document.getElementById('address').value}, ${document.getElementById('barangay').value}`;
-            }
-
-            // Update service details
-            document.querySelector('[x-show="step === 3"] .selected-service').textContent = serviceName;
-            document.querySelector('[x-show="step === 3"] .amount-value').textContent = amount;
-        }
-
-        // Modify the existing submit handler
-        document.getElementById('paymentForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            updateReviewDetails();
-            
-            const formData = new FormData(this);
-            
-            try {
-                const response = await fetch('process_payment.php', {
-                    method: 'POST',
-                    body: formData
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    // Show success message and ticket code
-                    const ticketCodeHtml = `
-                        <div class="bg-green-50 rounded-lg p-6 mb-6">
-                            <h3 class="text-lg font-medium text-green-900">Payment Successful</h3>
-                            <p class="mt-2 text-sm text-green-600">
-                                Your ticket code: <strong>${result.ticket_code}</strong>
-                            </p>
-                            <p class="mt-1 text-sm text-green-500">
-                                A confirmation email has been sent to your email address.
-                            </p>
-                        </div>
-                    `;
-                    
-                    document.querySelector('[x-show="step === 3"]')
-                        .insertAdjacentHTML('afterbegin', ticketCodeHtml);
-                        
-                    // Disable the confirm payment button
-                    document.querySelector('button[type="submit"]').disabled = true;
-                } else {
-                    alert('There was an error processing your payment. Please try again.');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('There was an error processing your payment. Please try again.');
-            }
-        });
     </script>
 </body>
 </html>

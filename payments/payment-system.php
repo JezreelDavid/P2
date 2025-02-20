@@ -1,5 +1,4 @@
 <?php
-// payment-system.php
 session_start();
 require 'dbConnection.php';
 
@@ -14,7 +13,7 @@ function getServices($conn) {
     return $services;
 }
 
-// Get parishes 
+// Get parishes
 function getParishes($conn) {
     $sql = "SELECT * FROM Parishes";
     $result = $conn->query($sql);
@@ -54,6 +53,7 @@ $parishes = getParishes($conn);
                 <h2 class="card-title">Church Service Payment</h2>
                 
                 <form id="paymentForm" method="POST" action="process-payment.php">
+                    <!-- Service selection -->
                     <div class="form-control w-full max-w-xs">
                         <label class="label">
                             <span class="label-text">Select Service</span>
@@ -66,7 +66,8 @@ $parishes = getParishes($conn);
                         </select>
                     </div>
 
-                    <div class="form-control w-full max-w-xs mt-4">
+                    <!-- Parish selection -->
+                    <div class="form-control w-full max-w-xs mt-4" id="parish-container" style="display: none;">
                         <label class="label">
                             <span class="label-text">Select Parish</span>
                         </label>
@@ -78,6 +79,7 @@ $parishes = getParishes($conn);
                         </select>
                     </div>
 
+                    <!-- Amount display -->
                     <div class="form-control w-full max-w-xs mt-4">
                         <label class="label">
                             <span class="label-text">Amount</span>
@@ -85,6 +87,7 @@ $parishes = getParishes($conn);
                         <input type="text" id="amount" name="amount" class="input input-bordered" readonly>
                     </div>
 
+                    <!-- Submit button -->
                     <div class="mt-6">
                         <button type="submit" class="btn btn-primary">Proceed to Payment</button>
                     </div>
@@ -96,8 +99,10 @@ $parishes = getParishes($conn);
     <script>
         const serviceSelect = document.getElementById('service');
         const parishSelect = document.getElementById('parish');
+        const parishContainer = document.getElementById('parish-container');
         const amountInput = document.getElementById('amount');
 
+        // Update the amount when service or parish is changed
         async function updateAmount() {
             const service_id = serviceSelect.value;
             const parish_id = parishSelect.value;
@@ -109,7 +114,22 @@ $parishes = getParishes($conn);
             }
         }
 
-        serviceSelect.addEventListener('change', updateAmount);
+        // Show parishes after selecting a service
+        serviceSelect.addEventListener('change', () => {
+            const service_id = serviceSelect.value;
+
+            if(service_id) {
+                parishContainer.style.display = 'block'; // Show parish dropdown
+                // Reset the parish and amount fields
+                parishSelect.value = '';
+                amountInput.value = '';
+            } else {
+                parishContainer.style.display = 'none'; // Hide parish dropdown if no service is selected
+                amountInput.value = '';
+            }
+        });
+
+        // Update amount when parish is selected
         parishSelect.addEventListener('change', updateAmount);
     </script>
 </body>

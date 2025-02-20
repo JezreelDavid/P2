@@ -1,35 +1,17 @@
 <?php
-require_once 'includes/functions.php';
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Generate ticket code
-    $ticketCode = generateTicketCode();
-    
-    // Get form data
-    $paymentDetails = [
-        'name' => $_POST['name'],
-        'email' => $_POST['email'],
-        'payment_method' => $_POST['payment_method'],
-        'amount' => $_POST['amount'],
-        'service' => $_POST['service']
-    ];
-    
-    // Return success response with ticket code
-    echo json_encode([
-        'success' => true,
-        'ticket_code' => $ticketCode
-    ]);
-    exit;
-}
+    // Add any PHP processing logic here
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Church Services Payment System</title>
+    <title>Payment System</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Alpine.js for interactions -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <!-- Animation library -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 </head>
 <body class="bg-gray-50">
@@ -128,7 +110,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             <!-- Step 2: Payment Details -->
-            <div x-show="step === 2" class="animate__animated animate__fadeIn">
+            <div x-show="step === 2"
+                 class="animate__animated animate__fadeIn">
                 <div>
                     <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
                         Payment Details
@@ -139,79 +122,141 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
 
                 <form class="mt-8 space-y-6" action="#" method="POST">
-                    <!-- GCash Payment Form -->
-                    <template x-if="payment_method === 'gcash'">
-                        <div class="space-y-4">
-                            <div>
-                                <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>
-                                <input type="text" id="name" name="name" required
-                                       class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm">
-                            </div>
+                    <!-- Personal Information -->
+                    <div class="space-y-4">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>
+                            <input type="text" id="name" name="name" required
+                                   class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                        </div>
 
-                            <div>
-                                <label for="address" class="block text-sm font-medium text-gray-700">Address</label>
-                                <input type="text" id="address" name="address" required
-                                       class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm">
-                            </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
+                            <input type="email" id="email" name="email" required
+                                   class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                        </div>
 
-                            <div>
-                                <label for="service" class="block text-sm font-medium text-gray-700">Select Service</label>
-                                <select id="service" name="service" required
-                                        onchange="updateAmount(this.value)"
-                                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm">
-                                    <option value="">Choose a service</option>
-                                    <option value="StIgnatius">St. Ignatius of Loyola Parish (Ususan, Taguig)</option>
-                                    <option value="StMichael">St. Michael the Archangel Parish (BGC, Taguig)</option>
-                                    <option value="StoRosario">Sto. Rosario de Pasig Parish (Rosario, Pasig)</option>
-                                    <option value="StaRosa">Sta. Rosa de Lima Parish (Bagong Ilog, Pasig)</option>
-                                </select>
-                            </div>
+                        <div>
+                            <label for="phone" class="block text-sm font-medium text-gray-700">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" required
+                                   class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                        </div>
 
-                            <div>
-                                <label for="amount" class="block text-sm font-medium text-gray-700">Amount to Pay</label>
-                                <input type="text" id="amount" name="amount" readonly
-                                       class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 bg-gray-50">
+                        <!-- GCash-specific fields -->
+                        <template x-if="payment_method === 'gcash'">
+                            <div class="space-y-4">
+                                <div>
+                                    <label for="gcash_number" class="block text-sm font-medium text-gray-700">GCash Number</label>
+                                    <input type="tel" id="gcash_number" name="gcash_number" required
+                                           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                                </div>
+                                <div>
+                                    <label for="gcash_message" class="block text-sm font-medium text-gray-700">Message/Note (Optional)</label>
+                                    <textarea id="gcash_message" name="gcash_message" rows="3"
+                                              class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                                              placeholder="Add any additional information or special instructions"></textarea>
+                                </div>
+                            </div>
+                        </template>
+
+                        <!-- Cash on Hand-specific fields -->
+                        <template x-if="payment_method === 'cash'">
+                            <div class="space-y-4">
+                                <div>
+                                    <label for="address" class="block text-sm font-medium text-gray-700">Complete Address</label>
+                                    <input type="text" id="address" name="address" required
+                                           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                                </div>
+                                <div>
+                                    <label for="barangay" class="block text-sm font-medium text-gray-700">Barangay</label>
+                                    <input type="text" id="barangay" name="barangay" required
+                                           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                                </div>
+                                <div>
+                                    <label for="landmark" class="block text-sm font-medium text-gray-700">Landmark</label>
+                                    <input type="text" id="landmark" name="landmark" required
+                                           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                                </div>
+                            </div>
+                        </template>
+
+                        <!-- Service Selection -->
+                        <div>
+                            <label for="service" class="block text-sm font-medium text-gray-700">Select Service</label>
+                            <select id="service" name="service" required
+                                    onchange="updateAmount(this.value)"
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                                <option value="">Choose a service</option>
+                                <optgroup label="Baptismal">
+                                    <option value="StIgnatiusOfLoyolaParish">St. Ignatius of Loyola Parish (Ususan, Taguig)</option>
+                                    <option value="StMichaelTheArchangelParish">St. Michael the Archangel Parish (BGC, Taguig)</option>
+                                    <option value="StoRosarioDePasigParish">Sto. Rosario de Pasig Parish (Rosario, Pasig)</option>
+                                    <option value="StaRosaDeLimaParish">Sta. Rosa de Lima Parish (Bagong Ilog, Pasig)</option>
+                                </optgroup>
+                            </select>
+                        </div>
+
+                        <!-- Amount Input -->
+                        <div>
+                            <label for="amount" class="block text-sm font-medium text-gray-700">Amount</label>
+                            <div class="mt-1 relative rounded-md shadow-sm">
+                                <!-- Currency Symbol -->
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <span class="text-gray-500 sm:text-sm font-medium">₱</span>
+                                </div>
+                                
+                                <!-- Amount Input -->
+                                <input type="number" 
+                                       name="amount" 
+                                       id="amount" 
+                                       required
+                                       min="0"
+                                       class="focus:ring-green-500 focus:border-green-500 block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md
+                                              transition-all duration-300 ease-in-out
+                                              hover:border-green-300
+                                              focus:shadow-lg
+                                              placeholder-gray-400"
+                                       placeholder="0.00" 
+                                       step="0.01">
+
+                                <!-- Currency Code -->
+                                <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                    <span class="text-gray-400 sm:text-sm">PHP</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Optional: Amount Validation Message -->
+                            <p class="mt-1 text-xs text-gray-500">Please enter amount greater than ₱0.00</p>
+                            
+                            <!-- Optional: Quick Amount Buttons -->
+                            <div class="mt-2 flex space-x-2">
+                                <button type="button" 
+                                        onclick="document.getElementById('amount').value='100'"
+                                        class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all duration-300">
+                                    ₱100
+                                </button>
+                                <button type="button"
+                                        onclick="document.getElementById('amount').value='500'"
+                                        class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all duration-300">
+                                    ₱500
+                                </button>
+                                <button type="button"
+                                        onclick="document.getElementById('amount').value='1000'"
+                                        class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all duration-300">
+                                    ₱1,000
+                                </button>
                             </div>
                         </div>
-                    </template>
-
-                    <!-- Cash Payment Form -->
-                    <template x-if="payment_method === 'cash'">
-                        <div class="space-y-4">
-                            <div>
-                                <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>
-                                <input type="text" id="name" name="name" required
-                                       class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm">
-                            </div>
-
-                            <div>
-                                <label for="address" class="block text-sm font-medium text-gray-700">Address</label>
-                                <input type="text" id="address" name="address" required
-                                       class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm">
-                            </div>
-
-                            <div>
-                                <label for="phone" class="block text-sm font-medium text-gray-700">Contact Number</label>
-                                <input type="tel" id="phone" name="phone" required
-                                       class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm">
-                            </div>
-
-                            <div>
-                                <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
-                                <input type="email" id="email" name="email" required
-                                       class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm">
-                            </div>
-                        </div>
-                    </template>
+                    </div>
 
                     <!-- Navigation Buttons -->
                     <div class="flex space-x-4">
                         <button type="button" @click="step = 1"
-                                class="flex-1 py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                                class="flex-1 py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transform transition-all duration-300 hover:scale-[1.02]">
                             Back
                         </button>
                         <button type="button" @click="step = 3"
-                                class="flex-1 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                                class="flex-1 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transform transition-all duration-300 hover:scale-[1.02]">
                             Review Payment
                         </button>
                     </div>
@@ -288,17 +333,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                     </div>
 
-                    <!-- GCash Payment Review -->
-                    <template x-if="payment_method === 'gcash'">
-                        <div class="bg-gray-50 rounded-lg p-6 space-y-4">
-                            <h3 class="text-lg font-medium text-gray-900">GCash Payment</h3>
-                            <div class="flex flex-col items-center space-y-4">
-                                <img src="path/to/gcash-qr.png" alt="GCash QR Code" class="w-48 h-48">
-                                <p class="text-sm text-gray-600">Scan QR code to pay ₱<span x-text="document.getElementById('amount').value"></span></p>
-                            </div>
-                        </div>
-                    </template>
-
                     <!-- Navigation Buttons -->
                     <div class="flex space-x-4">
                         <button type="button" @click="step = 2"
@@ -319,57 +353,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <script>
         function updateAmount(service) {
             const amounts = {
-                'StIgnatius': 100,
-                'StMichael': 200,
-                'StoRosario': 300,
-                'StaRosa': 400
+                'StIgnatiusOfLoyolaParish': 500,
+                'StMichaelTheArchangelParish': 600,
+                'StoRosarioDePasigParish': 700,
+                'StaRosaDeLimaParish': 800
             };
             
             if (service in amounts) {
-                document.getElementById('amount').value = amounts[service].toFixed(2);
+                document.getElementById('amount').value = amounts[service];
             }
         }
-
-        document.querySelector('form').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(this);
-            
-            try {
-                const response = await fetch(window.location.href, {
-                    method: 'POST',
-                    body: formData
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    // Update the review section to show ticket code
-                    const ticketCodeHtml = `
-                        <div class="bg-green-50 rounded-lg p-6 mb-6">
-                            <h3 class="text-lg font-medium text-green-900">Ticket Code</h3>
-                            <p class="mt-2 text-sm text-green-600">
-                                Your ticket code: <strong>${result.ticket_code}</strong>
-                            </p>
-                            <p class="mt-1 text-sm text-green-500">
-                                A confirmation email has been sent to your email address.
-                            </p>
-                        </div>
-                    `;
-                    
-                    document.querySelector('[x-show="step === 3"]')
-                        .insertAdjacentHTML('afterbegin', ticketCodeHtml);
-                        
-                    // Disable the confirm payment button
-                    document.querySelector('button[type="submit"]').disabled = true;
-                } else {
-                    alert('There was an error processing your payment. Please try again.');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('There was an error processing your payment. Please try again.');
-            }
-        });
     </script>
 </body>
 </html>
